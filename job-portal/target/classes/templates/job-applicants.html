@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicants - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2 th:text="'Applicants for ' + ${job.title}">Applicants</h2>
+
+    <div th:if="${#lists.isEmpty(applications)}" class="card">
+        <p>No applications yet for this position.</p>
+    </div>
+
+    <div class="card" th:each="app : ${applications}">
+        <h3 th:text="${app.applicant.fullName}">Applicant Name</h3>
+        <p class="job-meta" th:text="${app.applicant.email}">email@example.com</p>
+        <p class="job-meta">Applied on: <span th:text="${app.appliedDate}">Date</span></p>
+        <p th:if="${app.coverLetter != null and !app.coverLetter.isEmpty()}">
+            <strong>Cover Letter:</strong> <span th:text="${app.coverLetter}"></span>
+        </p>
+
+        <p style="margin:0.6rem 0;">
+            Status:
+            <span class="badge"
+                  th:classappend="${app.status.name() == 'APPLIED'} ? 'badge-applied' : (${app.status.name() == 'SHORTLISTED'} ? 'badge-shortlisted' : (${app.status.name() == 'SELECTED'} ? 'badge-selected' : 'badge-rejected'))"
+                  th:text="${app.status}">STATUS</span>
+        </p>
+
+        <form th:action="@{/applications/{id}/status(id=${app.id})}" method="post" style="flex-direction:row; gap:0.5rem;">
+            <select name="status" style="width:auto;">
+                <option value="APPLIED" th:selected="${app.status.name() == 'APPLIED'}">Applied</option>
+                <option value="SHORTLISTED" th:selected="${app.status.name() == 'SHORTLISTED'}">Shortlisted</option>
+                <option value="SELECTED" th:selected="${app.status.name() == 'SELECTED'}">Selected</option>
+                <option value="REJECTED" th:selected="${app.status.name() == 'REJECTED'}">Rejected</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="width:auto;">Update Status</button>
+        </form>
+    </div>
+
+    <a class="btn btn-secondary" th:href="@{/dashboard}">Back to Dashboard</a>
+</div>
+</body>
+</html>

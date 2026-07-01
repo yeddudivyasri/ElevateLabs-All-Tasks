@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container" style="max-width:500px;">
+    <div class="card">
+        <h3>Create an Account</h3>
+
+        <div th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></div>
+
+        <form th:action="@{/register}" th:object="${registrationDto}" method="post">
+            <div>
+                <label>Full Name</label>
+                <input type="text" th:field="*{fullName}" placeholder="John Doe" />
+                <span class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" th:field="*{email}" placeholder="john@example.com" />
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div>
+                <label>Password</label>
+                <input type="password" th:field="*{password}" placeholder="At least 6 characters" />
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div>
+                <label>I am a</label>
+                <select th:field="*{role}">
+                    <option value="">-- Select Role --</option>
+                    <option value="APPLICANT">Job Seeker (Applicant)</option>
+                    <option value="EMPLOYER">Employer</option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+            </div>
+            <div>
+                <label>Company Name (Employers only)</label>
+                <input type="text" th:field="*{companyName}" placeholder="Optional for job seekers" />
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <p style="margin-top:1rem;">Already have an account? <a th:href="@{/login}">Login</a></p>
+    </div>
+</div>
+</body>
+</html>

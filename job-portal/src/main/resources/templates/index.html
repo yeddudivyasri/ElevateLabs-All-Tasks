@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>JobPortal - Find Your Next Opportunity</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <div class="hero">
+        <h1>Find Your Next Career Opportunity</h1>
+        <p>Browse <span th:text="${jobCount}">0</span> open positions or post a job for top talent.</p>
+        <a class="btn btn-primary" th:href="@{/jobs}">Browse Jobs</a>
+        <a class="btn btn-success" th:href="@{/register}">Get Started</a>
+    </div>
+
+    <div class="card">
+        <h3>For Job Seekers</h3>
+        <p>Search and filter jobs by title, location, type, and salary. Apply directly and track your application status from your dashboard.</p>
+    </div>
+    <div class="card">
+        <h3>For Employers</h3>
+        <p>Post job openings, manage applications, and review candidates — all from a single dashboard.</p>
+    </div>
+</div>
+</body>
+</html>

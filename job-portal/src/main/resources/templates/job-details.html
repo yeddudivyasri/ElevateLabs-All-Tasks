@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${job.title} + ' - JobPortal'">Job Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <div class="card">
+        <h2 th:text="${job.title}">Job Title</h2>
+        <p class="job-meta">
+            <strong th:text="${job.company}">Company</strong> ·
+            <span th:text="${job.location}">Location</span> ·
+            <span th:text="${job.jobType}">Type</span>
+        </p>
+        <p class="job-meta">Salary: ₹<span th:text="${job.salary}">0</span>/year</p>
+        <p class="job-meta">Posted on: <span th:text="${job.postedDate}">Date</span></p>
+
+        <h3 style="margin-top:1rem;">Description</h3>
+        <p th:text="${job.description}">Full description here...</p>
+
+        <div style="margin-top:1.5rem;">
+            <a sec:authorize="!isAuthenticated()" class="btn btn-primary" th:href="@{/login}">Login to Apply</a>
+
+            <span sec:authorize="hasRole('APPLICANT')">
+                <a th:if="${alreadyApplied == false}" class="btn btn-success" th:href="@{/jobs/{id}/apply(id=${job.id})}">Apply Now</a>
+                <span th:if="${alreadyApplied == true}" class="badge badge-applied">Already Applied</span>
+            </span>
+
+            <span sec:authorize="hasRole('EMPLOYER')">
+                <a class="btn btn-primary" th:href="@{/jobs/{id}/applicants(id=${job.id})}">View Applicants</a>
+            </span>
+
+            <a class="btn btn-secondary" th:href="@{/jobs}">Back to Jobs</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

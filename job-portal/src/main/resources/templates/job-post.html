@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post a Job - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container" style="max-width:600px;">
+    <div class="card">
+        <h3>Post a New Job</h3>
+        <form th:action="@{/jobs/post}" th:object="${job}" method="post">
+            <div>
+                <label>Job Title</label>
+                <input type="text" th:field="*{title}" placeholder="e.g. Software Engineer" />
+                <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+            </div>
+            <div>
+                <label>Company Name</label>
+                <input type="text" th:field="*{company}" placeholder="e.g. Tech Corp" />
+                <span class="error" th:if="${#fields.hasErrors('company')}" th:errors="*{company}"></span>
+            </div>
+            <div>
+                <label>Location</label>
+                <input type="text" th:field="*{location}" placeholder="e.g. Hyderabad" />
+                <span class="error" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></span>
+            </div>
+            <div>
+                <label>Job Type</label>
+                <select th:field="*{jobType}">
+                    <option value="FULL_TIME">Full Time</option>
+                    <option value="PART_TIME">Part Time</option>
+                    <option value="INTERNSHIP">Internship</option>
+                    <option value="CONTRACT">Contract</option>
+                </select>
+            </div>
+            <div>
+                <label>Annual Salary (₹)</label>
+                <input type="number" th:field="*{salary}" placeholder="e.g. 600000" />
+                <span class="error" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></span>
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea th:field="*{description}" rows="6" placeholder="Job responsibilities, requirements, etc."></textarea>
+                <span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </div>
+            <button type="submit" class="btn btn-success">Post Job</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

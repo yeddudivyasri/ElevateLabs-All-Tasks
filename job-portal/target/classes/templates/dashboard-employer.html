@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Dashboard - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2>Welcome, <span th:text="${user.fullName}">Employer</span></h2>
+    <p class="job-meta" th:text="${user.companyName}">Company</p>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number" th:text="${#lists.size(postedJobs)}">0</div>
+            <div>Jobs Posted</div>
+        </div>
+        <div class="stat-box">
+            <div class="number" th:text="${totalApplicants}">0</div>
+            <div>Total Applicants</div>
+        </div>
+    </div>
+
+    <a class="btn btn-success" th:href="@{/jobs/post}" style="margin-bottom:1.2rem; display:inline-block;">+ Post New Job</a>
+
+    <h3 style="margin-bottom:0.8rem;">Your Job Postings</h3>
+
+    <div th:if="${#lists.isEmpty(postedJobs)}" class="card">
+        <p>You haven't posted any jobs yet.</p>
+    </div>
+
+    <div class="card" th:each="job : ${postedJobs}">
+        <h3 th:text="${job.title}">Job Title</h3>
+        <p class="job-meta" th:text="${job.location} + ' · ' + ${job.jobType} + ' · ₹' + ${job.salary} + '/year'">Meta</p>
+        <a class="btn btn-primary" th:href="@{/jobs/{id}/applicants(id=${job.id})}">View Applicants</a>
+        <a class="btn btn-secondary" th:href="@{/jobs/{id}(id=${job.id})}">View Job</a>
+        <form th:action="@{/jobs/delete/{id}(id=${job.id})}" method="post" style="display:inline; flex-direction:row;">
+            <button type="submit" class="btn btn-danger" style="width:auto;">Delete</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

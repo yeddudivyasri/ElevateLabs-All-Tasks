@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Jobs - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2 style="margin-bottom:1rem;">Browse Jobs</h2>
+
+    <form th:action="@{/jobs/search}" th:object="${searchDto}" method="post" class="search-bar">
+        <input type="text" th:field="*{title}" placeholder="Job title (e.g. Developer)" />
+        <input type="text" th:field="*{location}" placeholder="Location" />
+        <select th:field="*{jobType}">
+            <option value="">Any Type</option>
+            <option value="FULL_TIME">Full Time</option>
+            <option value="PART_TIME">Part Time</option>
+            <option value="INTERNSHIP">Internship</option>
+            <option value="CONTRACT">Contract</option>
+        </select>
+        <input type="number" th:field="*{minSalary}" placeholder="Min Salary" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(jobs)}" class="card">
+        <p>No jobs found matching your criteria.</p>
+    </div>
+
+    <div class="card" th:each="job : ${jobs}">
+        <h3 th:text="${job.title}">Job Title</h3>
+        <p class="job-meta">
+            <span th:text="${job.company}">Company</span> ·
+            <span th:text="${job.location}">Location</span> ·
+            <span th:text="${job.jobType}">Type</span> ·
+            ₹<span th:text="${job.salary}">0</span>/year
+        </p>
+        <p th:text="${#strings.abbreviate(job.description, 150)}">Description preview...</p>
+        <a class="btn btn-primary" th:href="@{/jobs/{id}(id=${job.id})}">View Details</a>
+    </div>
+</div>
+</body>
+</html>

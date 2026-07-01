@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container" style="max-width:600px;">
+    <div class="card">
+        <h3>Apply for <span th:text="${job.title}">Job</span></h3>
+        <p class="job-meta" th:text="${job.company} + ' · ' + ${job.location}">Company · Location</p>
+
+        <div th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></div>
+
+        <form th:action="@{/jobs/{id}/apply(id=${job.id})}" method="post">
+            <div>
+                <label>Cover Letter (optional)</label>
+                <textarea name="coverLetter" rows="6" placeholder="Tell the employer why you're a great fit..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Application</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

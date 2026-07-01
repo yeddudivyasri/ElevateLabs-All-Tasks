@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2>Welcome, <span th:text="${user.fullName}">Applicant</span></h2>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="number" th:text="${#lists.size(applications)}">0</div>
+            <div>Applications Submitted</div>
+        </div>
+    </div>
+
+    <a class="btn btn-primary" th:href="@{/jobs}" style="margin-bottom:1.2rem; display:inline-block;">Browse More Jobs</a>
+
+    <h3 style="margin-bottom:0.8rem;">Your Applications</h3>
+
+    <div th:if="${#lists.isEmpty(applications)}" class="card">
+        <p>You haven't applied to any jobs yet.</p>
+    </div>
+
+    <div class="card" th:each="app : ${applications}">
+        <h3 th:text="${app.job.title}">Job Title</h3>
+        <p class="job-meta" th:text="${app.job.company} + ' · ' + ${app.job.location}">Company · Location</p>
+        <p class="job-meta">Applied on: <span th:text="${app.appliedDate}">Date</span></p>
+        <p style="margin:0.5rem 0;">
+            Status:
+            <span class="badge"
+                  th:classappend="${app.status.name() == 'APPLIED'} ? 'badge-applied' : (${app.status.name() == 'SHORTLISTED'} ? 'badge-shortlisted' : (${app.status.name() == 'SELECTED'} ? 'badge-selected' : 'badge-rejected'))"
+                  th:text="${app.status}">STATUS</span>
+        </p>
+        <a class="btn btn-secondary" th:href="@{/jobs/{id}(id=${app.job.id})}">View Job</a>
+    </div>
+</div>
+</body>
+</html>

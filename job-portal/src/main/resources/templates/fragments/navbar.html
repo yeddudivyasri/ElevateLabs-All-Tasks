@@ -1,0 +1,17 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" class="navbar">
+    <a class="brand" th:href="@{/}">JobPortal</a>
+    <div>
+        <a th:href="@{/jobs}">Browse Jobs</a>
+        <span sec:authorize="!isAuthenticated()" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Register</a>
+        </span>
+        <span sec:authorize="isAuthenticated()" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a sec:authorize="hasRole('EMPLOYER')" th:href="@{/jobs/post}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">Post Job</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary" style="padding:0.3rem 0.9rem;">Logout</button>
+            </form>
+        </span>
+    </div>
+</div>
